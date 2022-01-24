@@ -9,27 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Books = void 0;
-const typeorm_1 = require("typeorm");
-const Autor_1 = require("./Autor");
-let Books = class Books {
-    id;
-    autors;
-    name;
+exports.TestController = void 0;
+const common_1 = require("@nestjs/common");
+let TestController = class TestController {
+    async getFilterList() {
+        console.log('hi');
+    }
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], Books.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.ManyToMany)(() => Autor_1.Autor, (autor) => autor.books),
-    __metadata("design:type", Array)
-], Books.prototype, "autors", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Books.prototype, "name", void 0);
-Books = __decorate([
-    (0, typeorm_1.Entity)('books')
-], Books);
-exports.Books = Books;
+    (0, common_1.Get)('list'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], TestController.prototype, "getFilterList", null);
+TestController = __decorate([
+    (0, common_1.Controller)('tests')
+], TestController);
+exports.TestController = TestController;

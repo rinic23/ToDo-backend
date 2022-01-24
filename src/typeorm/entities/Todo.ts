@@ -6,10 +6,12 @@ import {
   JoinTable,
   ManyToMany,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Filter } from './Filter';
+import { SearchTodo } from './SearchTodo';
 import { Task } from './Task';
 
 @Entity('todos')
@@ -34,5 +36,7 @@ export class Todo {
     inverseJoinColumn: { name: 'filter_id', referencedColumnName: 'id' },
   })
   filters!: Filter[];
+  @OneToOne(() => SearchTodo, (search) => search.todo, { cascade: true })
+  @JoinColumn({ name: 'id', referencedColumnName: 'todo_id' })
+  search!: SearchTodo;
 }
-

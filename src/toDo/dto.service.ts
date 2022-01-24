@@ -3,6 +3,7 @@ import {
   IsArray,
   IsDate,
   IsNumber,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -31,6 +32,22 @@ export class DtoTodo {
 export class DtoTaskService {
   @IsString()
   name!: string;
+}
+
+export class DtoTodoGetList {
+  @IsOptional()
+  @IsArray()
+  @IsNumber({}, { each: true })
+  @Type(() => Number)
+  filterIds!: number[];
+  @IsOptional()
+  @IsString()
+  search!: string;
+  @IsNumber()
+  page!: number;
+  @IsOptional()
+  @IsNumber()
+  limit!: number;
 }
 
 export class DtoTodoCreateService extends PickType(DtoTodo, [

@@ -10,6 +10,7 @@ async function bootstrap() {
         whitelist: true,
         forbidNonWhitelisted: true,
         transform: true,
+        transformOptions: { enableImplicitConversion: true },
         // stopAtFirstError: true, - Will be in the next "class-validator" release
     }));
     const config = new swagger_1.DocumentBuilder()

@@ -15,20 +15,26 @@ import { AuthGuard } from '@nestjs/passport';
 import {
   DtoTodoCreateController,
   DtoTodoEditController,
+  DtoTodoGetListController,
 } from './dto.controllers';
 
 @Controller('todo')
 export class ToDoController {
   constructor(private todoService: TodoService) {}
 
+  @Get('list')
+  getList(@Query() query: DtoTodoGetListController) {
+    return this.todoService.getList(query);
+  }
+
   @Get(':id')
   getToDoList(@Param('id') id: number) {
-    return this.todoService.find(id);
+    return this.todoService.findOrError(id);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('create')
-  async createToDo(
+  createToDo(
     @Body() todo: DtoTodoCreateController,
     @Request() { user }: { user: any },
   ) {
@@ -37,21 +43,13 @@ export class ToDoController {
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
-  async deleteToDo(@Param() { id }: { id: number }) {
+  deleteToDo(@Param() { id }: { id: number }) {
     return this.todoService.delete(id);
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Patch('/update')
-  async editToDo(@Body() todo: DtoTodoEditController) {
-    return await this.todoService.editTodo(todo);
+  @Patch('update')
+  editToDo(@Body() todo: DtoTodoEditController) {
+    return this.todoService.editTodo(todo);
   }
-
-  // @UseGuards(AuthGuard('jwt'))
-  // @Get('list')
-  // async getToDo() {
-  //   // console.log('controller', filterIds);
-  //   // return await this.todoService.list(filterIds);
-  //   return 'hi';
-  // }
 }

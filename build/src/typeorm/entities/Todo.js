@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Todo = void 0;
 const typeorm_1 = require("typeorm");
 const Filter_1 = require("./Filter");
+const SearchTodo_1 = require("./SearchTodo");
 const Task_1 = require("./Task");
 let Todo = class Todo {
     id;
@@ -21,6 +22,7 @@ let Todo = class Todo {
     userId;
     tasks;
     filters;
+    search;
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -56,6 +58,11 @@ __decorate([
     }),
     __metadata("design:type", Array)
 ], Todo.prototype, "filters", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => SearchTodo_1.SearchTodo, (search) => search.todo, { cascade: true }),
+    (0, typeorm_1.JoinColumn)({ name: 'id', referencedColumnName: 'todo_id' }),
+    __metadata("design:type", SearchTodo_1.SearchTodo)
+], Todo.prototype, "search", void 0);
 Todo = __decorate([
     (0, typeorm_1.Entity)('todos')
 ], Todo);

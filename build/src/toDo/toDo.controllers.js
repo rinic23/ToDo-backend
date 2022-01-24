@@ -22,19 +22,29 @@ let ToDoController = class ToDoController {
     constructor(todoService) {
         this.todoService = todoService;
     }
-    getToDoList(id) {
-        return this.todoService.find(id);
+    getList(query) {
+        return this.todoService.getList(query);
     }
-    async createToDo(todo, { user }) {
+    getToDoList(id) {
+        return this.todoService.findOrError(id);
+    }
+    createToDo(todo, { user }) {
         return this.todoService.create({ ...todo, userId: user.user.id });
     }
-    async deleteToDo({ id }) {
+    deleteToDo({ id }) {
         return this.todoService.delete(id);
     }
-    async editToDo(todo) {
-        return await this.todoService.editTodo(todo);
+    editToDo(todo) {
+        return this.todoService.editTodo(todo);
     }
 };
+__decorate([
+    (0, common_1.Get)('list'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [dto_controllers_1.DtoTodoGetListController]),
+    __metadata("design:returntype", void 0)
+], ToDoController.prototype, "getList", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
@@ -49,7 +59,7 @@ __decorate([
     __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [dto_controllers_1.DtoTodoCreateController, Object]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], ToDoController.prototype, "createToDo", null);
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
@@ -57,15 +67,15 @@ __decorate([
     __param(0, (0, common_1.Param)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], ToDoController.prototype, "deleteToDo", null);
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
-    (0, common_1.Patch)('/update'),
+    (0, common_1.Patch)('update'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [dto_controllers_1.DtoTodoEditController]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], ToDoController.prototype, "editToDo", null);
 ToDoController = __decorate([
     (0, common_1.Controller)('todo'),

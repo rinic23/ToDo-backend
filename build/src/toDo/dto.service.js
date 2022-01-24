@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DtoTodoEditService = exports.DtoTodoCreateService = exports.DtoTaskService = exports.DtoTodo = void 0;
+exports.DtoTodoEditService = exports.DtoTodoCreateService = exports.DtoTodoGetList = exports.DtoTaskService = exports.DtoTodo = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
@@ -61,6 +61,34 @@ __decorate([
     __metadata("design:type", String)
 ], DtoTaskService.prototype, "name", void 0);
 exports.DtoTaskService = DtoTaskService;
+class DtoTodoGetList {
+    filterIds;
+    search;
+    page;
+    limit;
+}
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsNumber)({}, { each: true }),
+    (0, class_transformer_1.Type)(() => Number),
+    __metadata("design:type", Array)
+], DtoTodoGetList.prototype, "filterIds", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], DtoTodoGetList.prototype, "search", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], DtoTodoGetList.prototype, "page", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], DtoTodoGetList.prototype, "limit", void 0);
+exports.DtoTodoGetList = DtoTodoGetList;
 class DtoTodoCreateService extends (0, swagger_1.PickType)(DtoTodo, [
     'name',
     'userId',

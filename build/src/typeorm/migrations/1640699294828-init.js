@@ -104,7 +104,49 @@ CREATE TABLE books_autor
     constraint c_books_autor_autor_fk foreign key (autor_id) references autors (id),
     constraint c_books_autor_books_fk foreign key (books_id) references books (id)
 )
-    `);
+    
+CREATE TABLE search_todos
+(
+    id      serial NOT NULL,
+    vector  tsvector,
+    todo_id int    NOT NULL,
+    constraint c_search_todos_vectors primary key (id),
+    constraint c_search_todos_vectors_todo_id_fk foreign key (todo_id) references todos (id) on delete cascade
+);
+CREATE INDEX vector_idx on search_todos_vectors USING gin (vector);
+
+-- функция которая будет срабатывать при добавлении todo
+CREATE Or REPLACE FUNCTION create_todo_search_vector()
+    RETURNS trigger AS
+$$
+BEGIN
+    Insert INTO search_todos_vectors(vector) VALUES (to_tsvector(new.name));
+    Return new;
+end;
+$$
+    Language 'plpgsql';
+
+-- тригер  который будет срабатывать при добавлении todo
+CREATE TRIGGER after_insert_todo
+    AFTER INSERT
+    on todos
+    FOR EACH ROW
+EXECUTE PROCEDURE create_todo_search_vector();
+
+CREATE TABLE search_todos
+(
+    id      serial NOT NULL,
+    vector  tsvector,
+    todo_id int    NOT NULL,
+    constraint c_search_todos_pk primary key (id),
+    constraint c_search_todos_todo_id_fk foreign key (todo_id) references todos (id) on delete cascade,
+    constraint c_search_todos_todo_id_uq unique (todo_id)
+);
+CREATE INDEX vector_idx on search_todos USING gin (vector);
+
+
+
+`);
     }
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     async down(queryRunner) { }
